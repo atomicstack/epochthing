@@ -133,7 +133,7 @@ sub post_epoch {
         my $now_strftime = strftime '%F %T', localtime;
         say "[$now_strftime] Tweeted: $epoch";
         $self->set_epoch(
-            $epoch => "posted $epoch " . strftime('[%F %T]', localtime($epoch)) . " at " .strftime('%F %T', localtime) . ( $message ? " (original message: $message)" : "" )
+            $epoch => "posted epoch $epoch " . strftime('[%F %T]', localtime($epoch)) . " at " .strftime('%F %T', localtime) . ( $message ? " (original message: $message)" : "" )
         );
     }
 }
