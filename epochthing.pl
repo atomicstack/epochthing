@@ -218,13 +218,13 @@ sub get_interesting_epochs {
             if $epoch =~ m/([0-9]{3})\1\1/;
 
             ( $found_epochs{$epoch} = 'doublets', next EPOCH )
-            if $epoch =~ m/([0-9]{2})\1\1\1\1/;
+            if $epoch =~ m/([0-9]{2})\1\1\1/;
 
             # $sieve->isprime($epoch) and ++$primes == 1
             # and ( $found_epochs{$epoch} = 'prime' and next EPOCH );
 
-            ( $found_epochs{$epoch} = 'symmetrical', next EPOCH )
-            if substr($epoch, 0, 5) == reverse(substr($epoch, 5, 5));
+            # ( $found_epochs{$epoch} = 'symmetrical', next EPOCH )
+            # if substr($epoch, 0, 5) == reverse(substr($epoch, 5, 5));
         }
 
         # sometimes there's a 10-second batch of triplets, the most interesting
@@ -235,12 +235,31 @@ sub get_interesting_epochs {
             delete @found_epochs{@to_delete};
         }
 
+        if ( grep { $_ eq 'doublets' } values %found_epochs == @$bucket ) {
+            my @to_delete = grep { my ($doublet) = m/((?:[0-9]{2})\1\1\1)/; $doublet ne shift_epoch_by_x($doublet, 2) } keys %found_epochs;
+            delete @found_epochs{@to_delete};
+        }
+
         @interesting_epochs{keys %found_epochs} = values %found_epochs;
     }
 
     keys(%interesting_epochs) and warn "interesting_epochs: ".Dumper(\%interesting_epochs);
 
     return \%interesting_epochs;
+}
+
+sub shift_epoch_by_x {
+    my ($epoch, $x) = @_;
+    die "bad shift param [$x]; must be between 1-9" if ( $x < 1 or $x > 9 );
+    my @chunks = split //, $epoch;
+
+    foreach my $i ( 1 .. $x ) {
+        my $end = pop @chunks;
+        unshift @chunks, $end;
+    }
+
+    my $shifted_epoch = join '' => @chunks;
+    return $shifted_epoch;
 }
 
 1;
