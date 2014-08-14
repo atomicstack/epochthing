@@ -208,7 +208,9 @@ sub get_interesting_epochs {
             ( $found_epochs{$epoch} = '1234567', next EPOCH )
             if $epoch =~ m/1234567/;
 
-            # lots of the same digit
+            ( $found_epochs{$epoch} = 'megasecond', next EPOCH )
+            if $epoch =~ m/00000000/;
+
             ( $found_epochs{$epoch} = 'repetition', next EPOCH )
             if $epoch =~ m/([0-9])\1\1\1\1\1\1\1+/;
 
