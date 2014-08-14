@@ -58,11 +58,12 @@ sub _build__twatter {
     my ($self) = @_;
 
     my $nt = Net::Twitter::Lite::WithAPIv1_1->new(
-        traits   => [qw/OAuth/],
+        traits              => [qw/OAuth/],
         consumer_key        => $self->config->{consumer_key},
         consumer_secret     => $self->config->{consumer_secret},
         access_token        => $self->config->{access_token},
         access_token_secret => $self->config->{access_token_secret},
+        ssl                 => 1,
     );
 
     return $nt;
