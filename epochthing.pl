@@ -51,7 +51,7 @@ has config => (
 has json => (
     is => 'ro',
     isa => 'JSON::XS',
-    default => sub { JSON::XS->new->pretty },
+    default => sub { JSON::XS->new->pretty->canonical(1) },
 );
 
 sub _build__twatter {
