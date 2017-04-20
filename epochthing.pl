@@ -202,8 +202,15 @@ sub get_interesting_epochs {
 
         my %found_epochs;
 
+        my @localtime;
+
         EPOCH:
         foreach my $epoch (@$bucket) {
+
+            @localtime = localtime $epoch;
+
+            ( $found_epochs{$epoch} = '420', next EPOCH)
+            if ( $localtime[1] == 20 and $localtime[2] =~ /^(4|16)$/ and $localtime[3] == 20 and $localtime[4] == 3 );
 
             ( $found_epochs{$epoch} = '1234567', next EPOCH )
             if $epoch =~ m/1234567/;
