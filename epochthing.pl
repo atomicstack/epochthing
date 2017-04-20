@@ -225,10 +225,10 @@ sub get_interesting_epochs {
             if $epoch =~ m/([0-9])\1\1\1\1\1\1\1+/;
 
             ( $found_epochs{$epoch} = 'triplets', next EPOCH )
-            if $epoch =~ m/([0-9]{3})\1\1/;
+            if ( $epoch =~ m/([0-9]{3})\1\1/ and substr($epoch, 0, 1) == substr($epoch, -1, 1) );
 
             ( $found_epochs{$epoch} = 'doublets', next EPOCH )
-            if $epoch =~ m/([0-9]{2})\1\1\1/;
+            if ( $epoch =~ m/([0-9]{2})\1\1\1/ and substr($epoch, -2, 2) == substr($epoch, -4, 2) );
 
             # $sieve->isprime($epoch) and ++$primes == 1
             # and ( $found_epochs{$epoch} = 'prime' and next EPOCH );
