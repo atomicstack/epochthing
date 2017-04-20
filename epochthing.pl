@@ -211,6 +211,9 @@ sub get_interesting_epochs {
             ( $found_epochs{$epoch} = 'megasecond', next EPOCH )
             if $epoch =~ m/00000000/;
 
+            ( $found_epochs{$epoch} = 'semiweeklyzero', next EPOCH )
+            if $epoch =~ m/000000$/;
+
             ( $found_epochs{$epoch} = 'repetition', next EPOCH )
             if $epoch =~ m/([0-9])\1\1\1\1\1\1\1+/;
 
